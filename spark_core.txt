@@ -335,3 +335,31 @@ only showing top 20 rows
 |        110|      John|      9200|
 +-----------+----------+----------+
 only showing top 20 rows
+
+# To update existing column 
+>>> empDf.withColumn("SALARY",col("SALARY") - 1000).select("EMPLOYEE_ID","FIRST_NAME","SALARY").show()
++-----------+----------+------+
+|EMPLOYEE_ID|FIRST_NAME|SALARY|
++-----------+----------+------+
+|        198|    Donald|  1600|
+|        199|   Douglas|  1600|
+|        200|  Jennifer|  3400|
+|        201|   Michael| 12000|
+|        202|       Pat|  5000|
+|        203|     Susan|  5500|
+|        204|   Hermann|  9000|
+|        205|   Shelley| 11008|
+|        206|   William|  7300|
+|        100|    Steven| 23000|
+|        101|     Neena| 16000|
+|        102|       Lex| 16000|
+|        103| Alexander|  8000|
+|        104|     Bruce|  5000|
+|        105|     David|  3800|
+|        106|     Valli|  3800|
+|        107|     Diana|  3200|
+|        108|     Nancy| 11008|
+|        109|    Daniel|  8000|
+|        110|      John|  7200|
++-----------+----------+------+
+only showing top 20 rows
