@@ -27,8 +27,10 @@ schema = StructType([ \
  
  # Read data from HDFS path
  
->>> df1 = spark.read.option("header",True).csv("/input_data/departments.csv")
->>> df1.printSchema()
+df1 = spark.read.option("header",True).csv("/input_data/departments.csv")
+df1.printSchema()
+
+#Output
 root
  |-- DEPARTMENT_ID: string (nullable = true)
  |-- DEPARTMENT_NAME: string (nullable = true)
@@ -36,8 +38,10 @@ root
  |-- LOCATION_ID: string (nullable = true)
  
  
->>> df2 = spark.read.option("header",True).option("inferSchema",True).csv("/input_data/departments.csv")
->>> df2.printSchema()
+df2 = spark.read.option("header",True).option("inferSchema",True).csv("/input_data/departments.csv")
+df2.printSchema()
+
+#Output
 root
  |-- DEPARTMENT_ID: integer (nullable = true)
  |-- DEPARTMENT_NAME: string (nullable = true)
@@ -45,7 +49,9 @@ root
  |-- LOCATION_ID: integer (nullable = true)
  
  
- >>> df2.show()
+ df2.show()
+ 
+ #Output
 +-------------+--------------------+----------+-----------+
 |DEPARTMENT_ID|     DEPARTMENT_NAME|MANAGER_ID|LOCATION_ID|
 +-------------+--------------------+----------+-----------+
