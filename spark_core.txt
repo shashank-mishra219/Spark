@@ -22,4 +22,6 @@ schema = StructType([ \
  
  df.show(truncate=False)
  
+ df.printSchema()
+ 
  
