@@ -25,3 +25,51 @@ schema = StructType([ \
  df.printSchema()
  
  
+ # Read data from HDFS path
+ 
+>>> df1 = spark.read.option("header",True).csv("/input_data/departments.csv")
+>>> df1.printSchema()
+root
+ |-- DEPARTMENT_ID: string (nullable = true)
+ |-- DEPARTMENT_NAME: string (nullable = true)
+ |-- MANAGER_ID: string (nullable = true)
+ |-- LOCATION_ID: string (nullable = true)
+ 
+ 
+>>> df2 = spark.read.option("header",True).option("inferSchema",True).csv("/input_data/departments.csv")
+>>> df2.printSchema()
+root
+ |-- DEPARTMENT_ID: integer (nullable = true)
+ |-- DEPARTMENT_NAME: string (nullable = true)
+ |-- MANAGER_ID: string (nullable = true)
+ |-- LOCATION_ID: integer (nullable = true)
+ 
+ 
+ >>> df2.show()
++-------------+--------------------+----------+-----------+
+|DEPARTMENT_ID|     DEPARTMENT_NAME|MANAGER_ID|LOCATION_ID|
++-------------+--------------------+----------+-----------+
+|           10|      Administration|       200|       1700|
+|           20|           Marketing|       201|       1800|
+|           30|          Purchasing|       114|       1700|
+|           40|     Human Resources|       203|       2400|
+|           50|            Shipping|       121|       1500|
+|           60|                  IT|       103|       1400|
+|           70|    Public Relations|       204|       2700|
+|           80|               Sales|       145|       2500|
+|           90|           Executive|       100|       1700|
+|          100|             Finance|       108|       1700|
+|          110|          Accounting|       205|       1700|
+|          120|            Treasury|        - |       1700|
+|          130|       Corporate Tax|        - |       1700|
+|          140|  Control And Credit|        - |       1700|
+|          150|Shareholder Services|        - |       1700|
+|          160|            Benefits|        - |       1700|
+|          170|       Manufacturing|        - |       1700|
+|          180|        Construction|        - |       1700|
+|          190|         Contracting|        - |       1700|
+|          200|          Operations|        - |       1700|
++-------------+--------------------+----------+-----------+
+
+
+ 
