@@ -1,0 +1,25 @@
+# Execute below commands after opening PySpark Shell 
+# Execute each command one by one
+
+from pyspark.sql.types import StructType,StructField, StringType, IntegerType
+
+person_list = [("Berry","","Allen",1,"M"),
+        ("Oliver","Queen","",2,"M"),
+        ("Robert","","Williams",3,"M"),
+        ("Tony","","Stark",4,"F"),
+        ("Rajiv","Mary","Kumar",5,"F")
+]
+
+schema = StructType([ \
+        StructField("firstname",StringType(),True), \
+        StructField("middlename",StringType(),True), \
+        StructField("lastname",StringType(),True), \
+        StructField("id", IntegerType(), True), \
+        StructField("gender", StringType(), True), \    
+ ])
+ 
+ df = spark.createDataFrame(data=person_list,schema=schema)
+ 
+ df.show(truncate=False)
+ 
+ 
