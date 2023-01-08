@@ -1866,3 +1866,68 @@ TypeError: 'Column' object is not callable
 |       102|       Lex|  De Haan|
 |       201|   Michael|Hartstein|
 +----------+----------+---------+
+
+>>> empDf.join(deptDf, (empDf.DEPARTMENT_ID == deptDf.DEPARTMENT_ID) & (deptDf.LOCATION_ID == 1700), "inner").select(empDf.EMPLOYEE_ID, empDf.DEPARTMENT_ID, deptDf.DEPARTMENT_NAME).show()
++-----------+-------------+---------------+
+|EMPLOYEE_ID|DEPARTMENT_ID|DEPARTMENT_NAME|
++-----------+-------------+---------------+
+|        200|           10| Administration|
+|        119|           30|     Purchasing|
+|        118|           30|     Purchasing|
+|        117|           30|     Purchasing|
+|        116|           30|     Purchasing|
+|        115|           30|     Purchasing|
+|        114|           30|     Purchasing|
+|        102|           90|      Executive|
+|        101|           90|      Executive|
+|        100|           90|      Executive|
+|        113|          100|        Finance|
+|        112|          100|        Finance|
+|        111|          100|        Finance|
+|        110|          100|        Finance|
+|        109|          100|        Finance|
+|        108|          100|        Finance|
+|        206|          110|     Accounting|
+|        205|          110|     Accounting|
++-----------+-------------+---------------+
+
+>>> from pyspark.sql.types import StructType,StructField, StringType, IntegerType
+>>> location_data = [(1700, "INDIA"), (1800, "USA")]
+>>> schema = StructType([ StructField("LOCATION_ID",IntegerType(),True), StructField("LOCATION_NAME",StringType(),True) ])
+>>> locDf = spark.createDataFrame(data=location_data,schema=schema)
+>>> locDf.printSchema()
+root
+ |-- LOCATION_ID: integer (nullable = true)
+ |-- LOCATION_NAME: string (nullable = true)
+
+>>> locDf.show()
++-----------+-------------+                                                     
+|LOCATION_ID|LOCATION_NAME|
++-----------+-------------+
+|       1700|        INDIA|
+|       1800|          USA|
++-----------+-------------+
+
+>>> empDf.join(deptDf, (empDf.DEPARTMENT_ID == deptDf.DEPARTMENT_ID) & (deptDf.LOCATION_ID == 1700), "inner").join(locDf, deptDf.LOCATION_ID == locDf.LOCATION_ID, "inner").select(empDf.EMPLOYEE_ID, empDf.DEPARTMENT_ID, deptDf.DEPARTMENT_NAME, locDf.LOCATION_NAME).show()
++-----------+-------------+---------------+-------------+
+|EMPLOYEE_ID|DEPARTMENT_ID|DEPARTMENT_NAME|LOCATION_NAME|
++-----------+-------------+---------------+-------------+
+|        205|          110|     Accounting|        INDIA|
+|        206|          110|     Accounting|        INDIA|
+|        108|          100|        Finance|        INDIA|
+|        109|          100|        Finance|        INDIA|
+|        110|          100|        Finance|        INDIA|
+|        111|          100|        Finance|        INDIA|
+|        112|          100|        Finance|        INDIA|
+|        113|          100|        Finance|        INDIA|
+|        100|           90|      Executive|        INDIA|
+|        101|           90|      Executive|        INDIA|
+|        102|           90|      Executive|        INDIA|
+|        114|           30|     Purchasing|        INDIA|
+|        115|           30|     Purchasing|        INDIA|
+|        116|           30|     Purchasing|        INDIA|
+|        117|           30|     Purchasing|        INDIA|
+|        118|           30|     Purchasing|        INDIA|
+|        119|           30|     Purchasing|        INDIA|
+|        200|           10| Administration|        INDIA|
++-----------+-------------+---------------+-------------+
