@@ -931,3 +931,86 @@ Traceback (most recent call last):
 pyspark.sql.utils.AnalysisException: grouping expressions sequence is empty, and 'EMPLOYEE_ID' is not an aggregate function. Wrap '(sum(salary) AS sum_salary)' in windowing function(s) or wrap 'EMPLOYEE_ID' in first() (or first_value) if you don't care which value you get.;
 Aggregate [EMPLOYEE_ID#16, sum(salary#23) AS sum_salary#193L]
 +- Relation [EMPLOYEE_ID#16,FIRST_NAME#17,LAST_NAME#18,EMAIL#19,PHONE_NUMBER#20,HIRE_DATE#21,JOB_ID#22,SALARY#23,COMMISSION_PCT#24,MANAGER_ID#25,DEPARTMENT_ID#26] csv
+
+>>> empDf.select("EMPLOYEE_ID","FIRST_NAME","DEPARTMENT_ID","SALARY").orderBy("salary").show()
++-----------+----------+-------------+------+
+|EMPLOYEE_ID|FIRST_NAME|DEPARTMENT_ID|SALARY|
++-----------+----------+-------------+------+
+|        132|        TJ|           50|  2100|
+|        136|     Hazel|           50|  2200|
+|        128|    Steven|           50|  2200|
+|        127|     James|           50|  2400|
+|        135|        Ki|           50|  2400|
+|        131|     James|           50|  2500|
+|        119|     Karen|           30|  2500|
+|        140|    Joshua|           50|  2500|
+|        198|    Donald|           50|  2600|
+|        199|   Douglas|           50|  2600|
+|        118|       Guy|           30|  2600|
+|        126|     Irene|           50|  2700|
+|        139|      John|           50|  2700|
+|        130|     Mozhe|           50|  2800|
+|        117|     Sigal|           30|  2800|
+|        116|    Shelli|           30|  2900|
+|        134|   Michael|           50|  2900|
+|        115| Alexander|           30|  3100|
+|        125|     Julia|           50|  3200|
+|        138|   Stephen|           50|  3200|
++-----------+----------+-------------+------+
+only showing top 20 rows
+
+>>> empDf.select("EMPLOYEE_ID","FIRST_NAME","DEPARTMENT_ID","SALARY").orderBy(col("DEPARTMENT_ID").asc(),col("SALARY").desc()).show(100)
++-----------+-----------+-------------+------+
+|EMPLOYEE_ID| FIRST_NAME|DEPARTMENT_ID|SALARY|
++-----------+-----------+-------------+------+
+|        200|   Jennifer|           10|  4400|
+|        201|    Michael|           20| 13000|
+|        202|        Pat|           20|  6000|
+|        114|        Den|           30| 11000|
+|        115|  Alexander|           30|  3100|
+|        116|     Shelli|           30|  2900|
+|        117|      Sigal|           30|  2800|
+|        118|        Guy|           30|  2600|
+|        119|      Karen|           30|  2500|
+|        203|      Susan|           40|  6500|
+|        121|       Adam|           50|  8200|
+|        120|    Matthew|           50|  8000|
+|        122|      Payam|           50|  7900|
+|        123|     Shanta|           50|  6500|
+|        124|      Kevin|           50|  5800|
+|        137|     Renske|           50|  3600|
+|        133|      Jason|           50|  3300|
+|        129|      Laura|           50|  3300|
+|        125|      Julia|           50|  3200|
+|        138|    Stephen|           50|  3200|
+|        134|    Michael|           50|  2900|
+|        130|      Mozhe|           50|  2800|
+|        126|      Irene|           50|  2700|
+|        139|       John|           50|  2700|
+|        198|     Donald|           50|  2600|
+|        199|    Douglas|           50|  2600|
+|        131|      James|           50|  2500|
+|        140|     Joshua|           50|  2500|
+|        135|         Ki|           50|  2400|
+|        127|      James|           50|  2400|
+|        128|     Steven|           50|  2200|
+|        136|      Hazel|           50|  2200|
+|        132|         TJ|           50|  2100|
+|        103|  Alexander|           60|  9000|
+|        104|      Bruce|           60|  6000|
+|        105|      David|           60|  4800|
+|        106|      Valli|           60|  4800|
+|        107|      Diana|           60|  4200|
+|        204|    Hermann|           70| 10000|
+|        100|     Steven|           90| 24000|
+|        102|        Lex|           90| 17000|
+|        101|      Neena|           90| 17000|
+|        108|      Nancy|          100| 12008|
+|        109|     Daniel|          100|  9000|
+|        110|       John|          100|  8200|
+|        112|Jose Manuel|          100|  7800|
+|        111|     Ismael|          100|  7700|
+|        113|       Luis|          100|  6900|
+|        205|    Shelley|          110| 12008|
+|        206|    William|          110|  8300|
++-----------+-----------+-------------+------+
