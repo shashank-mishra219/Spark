@@ -1014,3 +1014,111 @@ only showing top 20 rows
 |        205|    Shelley|          110| 12008|
 |        206|    William|          110|  8300|
 +-----------+-----------+-------------+------+
+
+>>> empDf.groupBy("DEPARTMENT_ID").sum("SALARY").show(100)
++-------------+-----------+
+|DEPARTMENT_ID|sum(SALARY)|
++-------------+-----------+
+|           20|      19000|
+|           40|       6500|
+|          100|      51608|
+|           10|       4400|
+|           50|      85600|
+|           70|      10000|
+|           90|      58000|
+|           60|      28800|
+|          110|      20308|
+|           30|      24900|
++-------------+-----------+
+
+>>> empDf.groupBy("DEPARTMENT_ID").max("SALARY").show(100)
++-------------+-----------+
+|DEPARTMENT_ID|max(SALARY)|
++-------------+-----------+
+|           20|      13000|
+|           40|       6500|
+|          100|      12008|
+|           10|       4400|
+|           50|       8200|
+|           70|      10000|
+|           90|      24000|
+|           60|       9000|
+|          110|      12008|
+|           30|      11000|
++-------------+-----------+
+
+>>> empDf.groupBy("DEPARTMENT_ID").min("SALARY").show(100)
++-------------+-----------+
+|DEPARTMENT_ID|min(SALARY)|
++-------------+-----------+
+|           20|       6000|
+|           40|       6500|
+|          100|       6900|
+|           10|       4400|
+|           50|       2100|
+|           70|      10000|
+|           90|      17000|
+|           60|       4200|
+|          110|       8300|
+|           30|       2500|
++-------------+-----------+
+
+>>> empDf.groupBy("DEPARTMENT_ID","JOB_ID").sum("SALARY").show(100)
++-------------+----------+-----------+
+|DEPARTMENT_ID|    JOB_ID|sum(SALARY)|
++-------------+----------+-----------+
+|           90|   AD_PRES|      24000|
+|           30|    PU_MAN|      11000|
+|           70|    PR_REP|      10000|
+|           50|    ST_MAN|      36400|
+|           40|    HR_REP|       6500|
+|           60|   IT_PROG|      28800|
+|           10|   AD_ASST|       4400|
+|           30|  PU_CLERK|      13900|
+|           50|  ST_CLERK|      44000|
+|           20|    MK_REP|       6000|
+|           50|  SH_CLERK|       5200|
+|           90|     AD_VP|      34000|
+|          100|FI_ACCOUNT|      39600|
+|          110|    AC_MGR|      12008|
+|          110|AC_ACCOUNT|       8300|
+|           20|    MK_MAN|      13000|
+|          100|    FI_MGR|      12008|
++-------------+----------+-----------+
+
+>>> empDf.printSchema()
+root
+ |-- EMPLOYEE_ID: integer (nullable = true)
+ |-- FIRST_NAME: string (nullable = true)
+ |-- LAST_NAME: string (nullable = true)
+ |-- EMAIL: string (nullable = true)
+ |-- PHONE_NUMBER: string (nullable = true)
+ |-- HIRE_DATE: string (nullable = true)
+ |-- JOB_ID: string (nullable = true)
+ |-- SALARY: integer (nullable = true)
+ |-- COMMISSION_PCT: string (nullable = true)
+ |-- MANAGER_ID: string (nullable = true)
+ |-- DEPARTMENT_ID: integer (nullable = true)
+
+>>> empDf.groupBy("DEPARTMENT_ID","JOB_ID").sum("SALARY", "EMPLOYEE_ID").show(100)
++-------------+----------+-----------+----------------+
+|DEPARTMENT_ID|    JOB_ID|sum(SALARY)|sum(EMPLOYEE_ID)|
++-------------+----------+-----------+----------------+
+|           90|   AD_PRES|      24000|             100|
+|           30|    PU_MAN|      11000|             114|
+|           70|    PR_REP|      10000|             204|
+|           50|    ST_MAN|      36400|             610|
+|           40|    HR_REP|       6500|             203|
+|           60|   IT_PROG|      28800|             525|
+|           10|   AD_ASST|       4400|             200|
+|           30|  PU_CLERK|      13900|             585|
+|           50|  ST_CLERK|      44000|            2120|
+|           20|    MK_REP|       6000|             202|
+|           50|  SH_CLERK|       5200|             397|
+|           90|     AD_VP|      34000|             203|
+|          100|FI_ACCOUNT|      39600|             555|
+|          110|    AC_MGR|      12008|             205|
+|          110|AC_ACCOUNT|       8300|             206|
+|           20|    MK_MAN|      13000|             201|
+|          100|    FI_MGR|      12008|             108|
++-------------+----------+-----------+----------------+
