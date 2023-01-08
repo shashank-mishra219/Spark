@@ -875,3 +875,59 @@ only showing top 20 rows
 |        127|14-JAN-07|           50|
 +-----------+---------+-------------+
 
+>>> from pyspark.sql.functions import *
+>>> empDf.count()
+50
+>>> empDf.select(count("salary")).show()
++-------------+
+|count(salary)|
++-------------+
+|           50|
++-------------+
+
+>>> empDf.select(count("salary").alias("total_count")).show()
++-----------+
+|total_count|
++-----------+
+|         50|
++-----------+
+
+>>> empDf.select(max("salary").alias("max_salary")).show()
++----------+
+|max_salary|
++----------+
+|     24000|
++----------+
+
+>>> empDf.select(min("salary").alias("min_salary")).show()
++----------+
+|min_salary|
++----------+
+|      2100|
++----------+
+
+>>> empDf.select(avg("salary").alias("avg_salary")).show()
++----------+
+|avg_salary|
++----------+
+|   6182.32|
++----------+
+
+>>> empDf.select(sum("salary").alias("sum_salary")).show()
++----------+
+|sum_salary|
++----------+
+|    309116|
++----------+
+
+>>> empDf.select("EMPLOYEE_ID", sum("salary").alias("sum_salary")).show()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/usr/local/spark/python/pyspark/sql/dataframe.py", line 1685, in select
+    jdf = self._jdf.select(self._jcols(*cols))
+  File "/usr/local/spark/python/lib/py4j-0.10.9.3-src.zip/py4j/java_gateway.py", line 1321, in __call__
+  File "/usr/local/spark/python/pyspark/sql/utils.py", line 117, in deco
+    raise converted from None
+pyspark.sql.utils.AnalysisException: grouping expressions sequence is empty, and 'EMPLOYEE_ID' is not an aggregate function. Wrap '(sum(salary) AS sum_salary)' in windowing function(s) or wrap 'EMPLOYEE_ID' in first() (or first_value) if you don't care which value you get.;
+Aggregate [EMPLOYEE_ID#16, sum(salary#23) AS sum_salary#193L]
++- Relation [EMPLOYEE_ID#16,FIRST_NAME#17,LAST_NAME#18,EMAIL#19,PHONE_NUMBER#20,HIRE_DATE#21,JOB_ID#22,SALARY#23,COMMISSION_PCT#24,MANAGER_ID#25,DEPARTMENT_ID#26] csv
