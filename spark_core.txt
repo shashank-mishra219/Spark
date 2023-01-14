@@ -2225,3 +2225,65 @@ only showing top 20 rows
 |          110| 12008|20308|
 |          110|  8300|20308|
 +-------------+------+-----+
+
+>>> from pyspark.sql.functions import *
+>>> spark.conf.set("spark.sql.autoBroadcastJoinThreshold", 104857600)
+>>> empDf.join(broadcast(deptDf), empDf.DEPARTMENT_ID == deptDf.DEPARTMENT_ID, "inner").select(empDf.EMPLOYEE_ID, empDf.DEPARTMENT_ID, deptDf.DEPARTMENT_NAME).show(100)
++-----------+-------------+----------------+
+|EMPLOYEE_ID|DEPARTMENT_ID| DEPARTMENT_NAME|
++-----------+-------------+----------------+
+|        198|           50|        Shipping|
+|        199|           50|        Shipping|
+|        200|           10|  Administration|
+|        201|           20|       Marketing|
+|        202|           20|       Marketing|
+|        203|           40| Human Resources|
+|        204|           70|Public Relations|
+|        205|          110|      Accounting|
+|        206|          110|      Accounting|
+|        100|           90|       Executive|
+|        101|           90|       Executive|
+|        102|           90|       Executive|
+|        103|           60|              IT|
+|        104|           60|              IT|
+|        105|           60|              IT|
+|        106|           60|              IT|
+|        107|           60|              IT|
+|        108|          100|         Finance|
+|        109|          100|         Finance|
+|        110|          100|         Finance|
+|        111|          100|         Finance|
+|        112|          100|         Finance|
+|        113|          100|         Finance|
+|        114|           30|      Purchasing|
+|        115|           30|      Purchasing|
+|        116|           30|      Purchasing|
+|        117|           30|      Purchasing|
+|        118|           30|      Purchasing|
+|        119|           30|      Purchasing|
+|        120|           50|        Shipping|
+|        121|           50|        Shipping|
+|        122|           50|        Shipping|
+|        123|           50|        Shipping|
+|        124|           50|        Shipping|
+|        125|           50|        Shipping|
+|        126|           50|        Shipping|
+|        127|           50|        Shipping|
+|        128|           50|        Shipping|
+|        129|           50|        Shipping|
+|        130|           50|        Shipping|
+|        131|           50|        Shipping|
+|        132|           50|        Shipping|
+|        133|           50|        Shipping|
+|        134|           50|        Shipping|
+|        135|           50|        Shipping|
+|        136|           50|        Shipping|
+|        137|           50|        Shipping|
+|        138|           50|        Shipping|
+|        139|           50|        Shipping|
+|        140|           50|        Shipping|
++-----------+-------------+----------------+
+
+>>> resultDf.write.mode("overwrite").option("header",True).save("/output/result")
+>>> resultDf.write.mode("overwrite").option("header",True).format("csv").save("/output/result")
+>>> resultDf.write.mode("append").option("header",True).format("csv").save("/output/result")
