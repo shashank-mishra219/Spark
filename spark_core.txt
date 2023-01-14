@@ -2326,3 +2326,5 @@ DataFrame[EMPLOYEE_ID: int, DEPARTMENT_ID: int, DEPARTMENT_NAME: string]
 >>> df3 = newDf.coalesce(5)
 >>> df3.rdd.getNumPartitions()
 5
+
+>>> resultDf.coalesce(1).write.mode("overwrite").option("header",True).format("csv").save("/output/result")
