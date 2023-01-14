@@ -2328,3 +2328,54 @@ DataFrame[EMPLOYEE_ID: int, DEPARTMENT_ID: int, DEPARTMENT_NAME: string]
 5
 
 >>> resultDf.coalesce(1).write.mode("overwrite").option("header",True).format("csv").save("/output/result")
+
+>>> jsonDf = spark.read.json("/input_data/jsonexample.json")
+>>> jsonDf.show()
++------------+----+-----+-------+
+|      Array1|Num1|Text1|  Text2|
++------------+----+-----+-------+
+|   [7, 8, 9]| 5.0|Hello|GoodBye|
+|[70, 88, 91]| 6.5| This|   That|
+|   [1, 2, 3]| 2.0|  Yes|     No|
++------------+----+-----+-------+
+
+>>> jsonDf.printSchema()
+root
+ |-- Array1: array (nullable = true)
+ |    |-- element: long (containsNull = true)
+ |-- Num1: double (nullable = true)
+ |-- Text1: string (nullable = true)
+ |-- Text2: string (nullable = true)
+
+>>> jsonDf.select(jsonDf.Text1, jsonDf.Array1).show()
++-----+------------+
+|Text1|      Array1|
++-----+------------+
+|Hello|   [7, 8, 9]|
+| This|[70, 88, 91]|
+|  Yes|   [1, 2, 3]|
++-----+------------+
+
+>>> jsonDf.select(jsonDf.Text1, jsonDf.Array1[2]).show()
++-----+---------+
+|Text1|Array1[2]|
++-----+---------+
+|Hello|        9|
+| This|       91|
+|  Yes|        3|
++-----+---------+
+
+>>> jsonDf.select(jsonDf.Text1, explode(jsonDf.Array1)).show()
++-----+---+
+|Text1|col|
++-----+---+
+|Hello|  7|
+|Hello|  8|
+|Hello|  9|
+| This| 70|
+| This| 88|
+| This| 91|
+|  Yes|  1|
+|  Yes|  2|
+|  Yes|  3|
++-----+---+
